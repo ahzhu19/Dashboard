@@ -178,4 +178,93 @@ export const getMockOverloadDays = (params = {}) => {
       resolve(formattedData);
     }, 500); // 模拟网络延迟
   });
+};
+
+// 模拟获取增容改装异常数据
+export const getMockCapacityAbnormal = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: [
+          { 
+            value: 28, 
+            name: '充电站A',
+            itemStyle: { color: '#ff4d4f' }
+          },
+          { 
+            value: 22, 
+            name: '充电站B',
+            itemStyle: { color: '#ffa940' }
+          },
+          { 
+            value: 18, 
+            name: '充电站C',
+            itemStyle: { color: '#73d13d' }
+          },
+          { 
+            value: 15, 
+            name: '充电站D',
+            itemStyle: { color: '#40a9ff' }
+          },
+          { 
+            value: 12, 
+            name: '充电站E',
+            itemStyle: { color: '#d3adf7' }
+          }
+        ]
+      });
+    }, 500);
+  });
+};
+
+// 模拟获取近6日电表跳闸数据
+export const getMockTripData = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // 获取最近6天的日期
+      const dates = Array.from({length: 6}, (_, i) => {
+        const date = new Date();
+        date.setDate(date.getDate() - (5 - i));
+        return `${date.getMonth() + 1}月${date.getDate()}日`;
+      });
+      
+      resolve({
+        data: {
+          dates: dates,
+          values: [5, 8, 3, 12, 6, 9]  // 模拟跳闸次数
+        }
+      });
+    }, 500);
+  });
+};
+
+// 模拟获取异常类型预测准确率数据
+export const getMockAccuracyData = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: [
+          { type: '高值异常', accuracy: 92 },
+          { type: '波动异常', accuracy: 88 },
+          { type: '趋势异常', accuracy: 85 },
+          { type: '持续高值异常', accuracy: 90 },
+          { type: '其他异常', accuracy: 82 }
+        ]
+      });
+    }, 500);
+  });
+};
+
+// 模拟获取电流预测准确率数据
+export const getMockCurrentAccuracy = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: {
+          times: ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00'],
+          accuracies: [95, 89, 93, 87, 91, 88]
+        }
+      });
+    }, 500);
+  });
 }; 

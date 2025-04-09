@@ -10,63 +10,26 @@
 </template>
 
 <script setup>
-import { h } from 'vue';
-import { useRouter } from 'vue-router';
-import { Layout, LayoutHeader, LayoutContent, LayoutSider, Menu, Card } from 'ant-design-vue';
-import { HomeOutlined, LineChartOutlined, WarningOutlined, MenuFoldOutlined, EnvironmentOutlined } from '@ant-design/icons-vue';
-import MapContainer from '../components/MapContainer.vue';
-import RankingList from '../components/RankingList.vue';
-import AbnormalTypeChart from '../components/AbnormalTypeChart.vue';
-import WeeklyAbnormalChart from '../components/WeeklyAbnormalChart.vue';
+import { ref } from 'vue';
 import BaseLayout from '../components/layout/BaseLayout.vue';
+import ChargingTimeChart from '../components/ChargingTimeChart.vue';
+import RankingList from '../components/RankingList.vue';
+import OverloadChart from '../components/OverloadChart.vue';
 
-const router = useRouter();
-
-const menuItems = [
+const cards = ref([
   {
-    key: 'home',
-    icon: () => h(HomeOutlined),
-    label: '首页',
-  },
-  {
-    key: 'load',
-    icon: () => h(LineChartOutlined),
-    label: '负荷检测',
-  },
-  {
-    key: 'abnormal',
-    icon: () => h(WarningOutlined),
-    label: '异常检测',
-  },
-  {
-    key: 'predict',
-    icon: () => h(MenuFoldOutlined),
-    label: '异常预测',
-  },
-];
-
-const handleMenuClick = ({ key }) => {
-  if (key === 'home') {
-    router.push('/');
-  } else if (key === 'load') {
-    router.push('/load-monitor');
-  }
-};
-
-const cards = [
-  {
-    title: '异常类型占比',
-    component: AbnormalTypeChart,
+    title: '充电时段分布',
+    component: ChargingTimeChart
   },
   {
     title: '高峰期充电站负荷持续时间排名',
-    component: RankingList,
+    component: RankingList
   },
   {
-    title: '近七日异常数量变化',
-    component: WeeklyAbnormalChart,
-  },
-];
+    title: '充电站负荷情况',
+    component: OverloadChart
+  }
+]);
 </script>
 
 <style scoped>
@@ -75,6 +38,7 @@ const cards = [
   margin-bottom: 20px;
   border-radius: 8px;
   background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
@@ -86,21 +50,6 @@ const cards = [
 :deep(.ant-card-body) {
   height: calc(100% - 55px);
   padding: 15px;
-}
-
-:deep(.ant-menu) {
-  border-bottom: none;
-  background: transparent;
-  line-height: 58px;
-}
-
-:deep(.ant-menu-item:hover) {
-  background-color: #e6f7ff;
-}
-
-:deep(.ant-menu-item-selected) {
-  color: #00b96b !important;
-  border-bottom: 2px solid #00b96b !important;
 }
 
 /* 自定义滚动条样式 */

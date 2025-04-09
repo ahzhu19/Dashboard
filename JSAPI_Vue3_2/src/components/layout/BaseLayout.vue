@@ -13,8 +13,14 @@
         <a-menu-item key="home">
           <router-link to="/">首页</router-link>
         </a-menu-item>
-        <a-menu-item key="monitor">
+        <a-menu-item key="load-monitor">
           <router-link to="/load-monitor">负荷监测</router-link>
+        </a-menu-item>
+        <a-menu-item key="abnormal-detection">
+          <router-link to="/abnormal-detection">异常检测</router-link>
+        </a-menu-item>
+        <a-menu-item key="abnormal-prediction">
+          <router-link to="/abnormal-prediction">异常预测</router-link>
         </a-menu-item>
       </a-menu>
     </header>
@@ -42,7 +48,13 @@ const selectedKeys = ref(['home']);
 
 onMounted(() => {
   // 根据当前路由设置选中的菜单项
-  selectedKeys.value = [route.path === '/' ? 'home' : 'monitor'];
+  const pathMap = {
+    '/': 'home',
+    '/load-monitor': 'load-monitor',
+    '/abnormal-detection': 'abnormal-detection',
+    '/abnormal-prediction': 'abnormal-prediction'
+  };
+  selectedKeys.value = [pathMap[route.path] || 'home'];
 });
 </script>
 
