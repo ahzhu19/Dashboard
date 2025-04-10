@@ -12,22 +12,22 @@
 <script setup>
 import { ref } from 'vue';
 import BaseLayout from '../components/layout/BaseLayout.vue';
-import ChargingTimeChart from '../components/ChargingTimeChart.vue';
+import AbnormalTypeChart from '../components/AbnormalTypeChart.vue';
 import RankingList from '../components/RankingList.vue';
-import OverloadChart from '../components/OverloadChart.vue';
+import WeeklyAbnormalChart from '../components/WeeklyAbnormalChart.vue';
 
 const cards = ref([
   {
-    title: '充电时段分布',
-    component: ChargingTimeChart
+    title: '异常类型占比',
+    component: AbnormalTypeChart
   },
   {
     title: '高峰期充电站负荷持续时间排名',
     component: RankingList
   },
   {
-    title: '充电站负荷情况',
-    component: OverloadChart
+    title: '近七日异常数量变化',
+    component: WeeklyAbnormalChart
   }
 ]);
 </script>
