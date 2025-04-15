@@ -267,4 +267,19 @@ export const getMockCurrentAccuracy = () => {
       });
     }, 500);
   });
+};
+
+// 模拟获取充电站负荷分布数据
+export const getMockLoadDistribution = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: {
+          normal: 15,    // 正常负荷的充电站数量
+          overload: 8,   // 过载的充电站数量
+          light: 5       // 轻载的充电站数量
+        }
+      });
+    }, 500);
+  });
 }; 
