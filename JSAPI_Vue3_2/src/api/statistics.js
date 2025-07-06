@@ -1,3 +1,60 @@
+import request from '../utils/request';
+// 获取月度异常统计
+
+// 获取月度异常统计
+export const getMonthlyAnomalyStats = async ({ meter_id = '', year, month } = {}) => {
+  // 如果未指定 year/month，自动取本月
+  const now = new Date();
+  const y = year || now.getFullYear();
+  const m = month || (now.getMonth() + 1); // getMonth() 返回0-11
+
+  try {
+    const response = await request.get('/statistics/monthly', {
+      params: {
+        ...(meter_id ? { meter_id } : {}),
+        year: y,
+        month: m
+      }
+    });
+
+    if (response.data.success) {
+      return response.data.data;
+    } else {
+      throw new Error('API 返回失败');
+    }
+  } catch (error) {
+    console.error('获取月度异常统计失败:', error);
+    throw new Error('获取月度异常统计失败');
+  }
+};
+
+// 获取按时段分布的异常统计信息
+export const getTimePeriodAnomalyStats = async ({ meter_id = '', year, month } = {}) => {
+  // 如果未指定 year/month，自动取本月
+  const now = new Date();
+  const y = year || now.getFullYear();
+  const m = month || (now.getMonth() + 1); // getMonth() 返回0-11
+
+  try {
+    const response = await request.get('/statistics/time-periods', {
+      params: {
+        ...(meter_id ? { meter_id } : {}),
+        year: y,
+        month: m
+      }
+    });
+
+    if (response.data.success) {
+      return response.data.data;
+    } else {
+      throw new Error('API 返回失败');
+    }
+  } catch (error) {
+    console.error('获取时段异常统计失败:', error);
+    throw new Error('获取时段异常统计失败');
+  }
+};
+
 // 模拟获取充电时段统计数据
 export const getMockChargingTime = (params = {}) => {
   // 默认参数

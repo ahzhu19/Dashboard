@@ -13,9 +13,9 @@
         <a-menu-item key="home">
           <router-link to="/">首页</router-link>
         </a-menu-item>
-        <a-menu-item key="load-monitor">
+        <!-- <a-menu-item key="load-monitor">
           <router-link to="/load-monitor">负荷监测</router-link>
-        </a-menu-item>
+        </a-menu-item> -->
         <a-menu-item key="abnormal-detection">
           <router-link to="/abnormal-detection">异常检测</router-link>
         </a-menu-item>
