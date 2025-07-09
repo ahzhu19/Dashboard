@@ -1,7 +1,15 @@
 <script setup>
 import { getMonthlyAnomalyStats } from '../api/statistics';
-import { ref, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue';
 import * as echarts from 'echarts';
+
+// 定义props
+const props = defineProps({
+  meterId: {
+    type: String,
+    default: ''
+  }
+});
 
 const chartRef = ref(null);
 let chart = null;
@@ -29,10 +37,25 @@ const colorList = [
 ];
 
 const renderChart = () => {
-  if (!chartRef.value || !chartData.value.length) return;
+  if (!chartRef.value) return;
   if (!chart) chart = echarts.init(chartRef.value);
 
-  const maxValue = Math.max(...chartData.value.map(item => item.count), 0);
+  // 如果没有数据，显示空状态
+  if (!chartData.value.length) {
+    const option = {
+      title: {
+        text: '暂无数据',
+        left: 'center',
+        top: 'middle',
+        textStyle: {
+          color: '#999',
+          fontSize: 16
+        }
+      }
+    };
+    chart.setOption(option);
+    return;
+  }
 
   const option = {
     tooltip: {
@@ -83,20 +106,37 @@ const renderChart = () => {
   chart.setOption(option);
 };
 
+// 加载数据
+const loadData = async () => {
+  loading.value = true;
+  error.value = '';
+  try {
+    const stats = await getMonthlyAnomalyStats({ 
+      meter_id: props.meterId 
+    });
+    chartData.value = stats.anomaly_distribution || [];
+    renderChart();
+  } catch (e) {
+    console.error('加载数据失败:', e);
+    error.value = '数据加载失败';
+    chartData.value = [];
+    renderChart();
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 监听meterId变化
+watch(() => props.meterId, (newMeterId, oldMeterId) => {
+  if (newMeterId !== oldMeterId) {
+    loadData();
+  }
+}, { immediate: false });
+
 onMounted(async () => {
   nextTick(async () => {
-    loading.value = true;
-    error.value = '';
-    try {
-      const stats = await getMonthlyAnomalyStats(); // 不传meter_id即为所有电表
-      chartData.value = stats.anomaly_distribution || [];
-      renderChart();
-      window.addEventListener('resize', handleResize);
-    } catch (e) {
-      error.value = '数据加载失败';
-    } finally {
-      loading.value = false;
-    }
+    await loadData();
+    window.addEventListener('resize', handleResize);
   });
 });
 
